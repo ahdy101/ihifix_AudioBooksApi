@@ -4,7 +4,6 @@ const pool = require('../db/db');
 
 router.get('/', async (req, res) => {
   try {
-
     const query = 'SELECT * FROM audio_books';
     const { rows } = await pool.query(query);
     res.json(rows);
@@ -17,7 +16,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const audioBookId = req.params.id;
   try {
-    const query = 'SELECT * FROM audio_books WHERE id = $1';
+    const query = 'SELECT * FROM audio_books WHERE audio_book_id = $1';
     const { rows } = await pool.query(query, [audioBookId])
     if (rows.length === 0) {
       return res.status(404).json({ error: 'Audio book not found' });
@@ -62,7 +61,7 @@ router.patch('/:id', async (req, res) => {
   router.delete('/:id', async (req, res) => {
     const audioBookId = req.params.id;
     try {
-      const query = 'DELETE FROM audio_books WHERE id = $1 RETURNING *';
+      const query = 'DELETE FROM audio_books WHERE audio_book_id = $1 RETURNING *';
       const { rows } = await pool.query(query, [audioBookId]);
   
       if (rows.length === 0) {
